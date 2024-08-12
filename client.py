@@ -5,9 +5,6 @@ import os  # Import the os module to interact with the operating system, such as
 ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate'  # URL for activating a license
 VALIDATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/validate'  # URL for validating a license
 
-# Your Lemon Squeezy API key (replace with your actual API key)
-LEMON_SQUEEZY_API_KEY = 'YOUR_LEMON_SQUEEZY_API_KEYy'
-
 
 # Function to prompt the user for a license key
 def prompt_for_license_key():
@@ -17,7 +14,6 @@ def prompt_for_license_key():
 # Function to activate the provided license key using the Lemon Squeezy API
 def activate_license_key(license_key):
     headers = {
-        'Authorization': f'Bearer {LEMON_SQUEEZY_API_KEY}',  # Add the API key to the request headers
         'Accept': 'application/json'  # Request that the response is returned in JSON format
     }
     data = {
@@ -53,7 +49,6 @@ def validate_license_key():
         return False
 
     headers = {
-        'Authorization': f'Bearer {LEMON_SQUEEZY_API_KEY}',  # Add the API key to the request headers
         'Accept': 'application/json'  # Request that the response is returned in JSON format
     }
     data = {
