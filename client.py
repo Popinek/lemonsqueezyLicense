@@ -6,7 +6,7 @@ ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate'  # URL for ac
 VALIDATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/validate'  # URL for validating a license
 
 # Your Lemon Squeezy API key (replace with your actual API key)
-LEMON_SQUEEZY_API_KEY = 'YOUR_LEMON_SQUEEZY_API_KEY'
+LEMON_SQUEEZY_API_KEY = 'YOUR_LEMON_SQUEEZY_API_KEYy'
 
 
 # Function to prompt the user for a license key
