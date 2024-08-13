@@ -1,6 +1,10 @@
 import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
 
+# TODO
+# add security for activation keys
+
+
 # URLs for interacting with the Lemon Squeezy API
 ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate'  # URL for activating a license
 VALIDATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/validate'  # URL for validating a license
