@@ -1,8 +1,9 @@
 import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
 
-# TODO
-# add security for activation keys
+#TODO
+# add License key statuses when inactive disabled or expired
+# only 1 machine can use the key pair with hw
 
 
 # URLs for interacting with the Lemon Squeezy API
@@ -22,7 +23,7 @@ def activate_license_key(license_key):
     }
     data = {
         'license_key': license_key,  # Include the provided license key in the request data
-        'instance_name': 'MyAppInstance',  # Customize this name as needed for your application
+        'instance_name': 'PythonAppLemonSqueezy',  # Customize this name as needed for your application
     }
     try:
         # Send a POST request to the Lemon Squeezy API to activate the license key
@@ -38,6 +39,15 @@ def activate_license_key(license_key):
         else:
             # If the activation fails, print the response for debugging purposes
             print("Failed to activate license key. Response:", result)
+            return False
+    except requests.HTTPError as e:
+        if response.status_code == 400 and "true" in response.text:
+            print("This license key has already been activated.")
+            save_activation_key(license_key)  # Save the key since it's valid but already activated
+            return True  # Consider this a success
+        else:
+            # Handle other types of HTTP errors
+            print(f"Invalid license key")
             return False
     except requests.RequestException:
         # Handle any exceptions that occur during the request
@@ -74,7 +84,6 @@ def validate_license_key():
             return False
     except requests.RequestException:
         # Handle any exceptions that occur during the request
-        print(f"An error occurred during validation")
         return False
 
 
