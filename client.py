@@ -47,7 +47,6 @@ def activate_license_key(license_key):
             return True  # Consider this a success
         else:
             # Handle other types of HTTP errors
-            print(f"Invalid license key")
             return False
     except requests.RequestException:
         # Handle any exceptions that occur during the request
@@ -75,15 +74,21 @@ def validate_license_key():
         response.raise_for_status()  # Raise an error for any HTTP status codes that indicate a request failure
         result = response.json()  # Parse the JSON response
 
-        # Check if the license key is valid
-        if result.get('valid'):
+        # Check if the license key is valid and not expired or disabled
+        status = result.get('license_key', {}).get('status')
+
+        if status == 'active':
+            print(f"Your license key is {status}.")
             return True
+        elif status in ['inactive', 'expired', 'disabled']:
+            print(f"Your license key is {status}. Please contact support or renew your subscription.")
+            return False
         else:
-            # If the validation fails, print the error message for debugging purposes
             print(result.get('error', 'Unknown error occurred'))
             return False
     except requests.RequestException:
         # Handle any exceptions that occur during the request
+        print("Your license key is invalid. Please contact support or renew your subscription.")
         return False
 
 
@@ -114,7 +119,6 @@ def main():
     if activation_key:
         print("License key found. Validating...")
         if not validate_license_key():  # Validate the loaded license key
-            print("Your license key is invalid, expired, or canceled. Please buy a subscription.")
             return  # Exit the program if the license key is invalid
     else:
         # Prompt the user for a license key until a valid one is provided or the user quits
