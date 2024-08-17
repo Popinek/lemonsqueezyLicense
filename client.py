@@ -2,8 +2,7 @@ import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
 
 #TODO
-# add License key statuses when inactive disabled or expired
-# only 1 machine can use the key pair with hw
+# only 1 machine can use the key, pair with hw on what it was activated.
 
 
 # URLs for interacting with the Lemon Squeezy API
