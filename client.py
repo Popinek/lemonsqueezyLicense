@@ -1,13 +1,19 @@
 import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
+import hashlib
 
-#TODO
-# only 1 machine can use the key, pair with hw on what it was activated.
+
 
 
 # URLs for interacting with the Lemon Squeezy API
 ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate'  # URL for activating a license
 VALIDATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/validate'  # URL for validating a license
+
+
+# Function to Generate a simple HWID based on the machine's MAC address.
+def get_hwid():
+    hwid = hashlib.md5(os.popen('getmac').read().encode('utf-8')).hexdigest()
+    return hwid
 
 
 # Function to prompt the user for a license key
@@ -105,6 +111,28 @@ def load_activation_key():
     return None  # Return None if the file does not exist
 
 
+# Function check if License key match HWID
+def validate_hwid():
+    hwid = get_hwid()
+    license_key = load_activation_key()
+
+    data = {
+        'license_key': license_key,
+        'hwid': hwid
+    }
+    try:
+        response = requests.post('http://127.0.0.1:5000/validate', json=data)
+        result = response.json()
+
+        if response.status_code == 200:
+            print(result['message'])
+            # Proceed with starting the software
+        else:
+            print(f"Error: {result['message']}")
+            # Exit or disable the software
+    except requests.exceptions.RequestException as e:
+        print(f"Error: Could not connect to server: {e}")
+
 # The main function that runs your script's main functionality
 def main_script():
     # Place your script's primary functionality here
@@ -131,6 +159,7 @@ def main():
             if activate_license_key(license_key) or validate_license_key():  # Activate or validate the license key
                 break  # Exit the loop if the license key is valid
 
+    validate_hwid()
     # If the license key is valid, run the main script
     main_script()
 

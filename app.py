@@ -46,7 +46,7 @@ def validate_license():
     # If the HWID matches, allow access
     if stored_hwid == hwid:
         conn.close()
-        return jsonify({'status': 'success', 'message': 'License validated successfully'})
+        return jsonify({'status': 'success', 'message': 'License key and HWID matches!'})
 
     # If the HWID does not match, deny access
     conn.close()
