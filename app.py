@@ -19,7 +19,7 @@ def init_db():
 
 
 @app.route('/validate', methods=['POST'])
-def validate_license():
+def validate_hwis():
     data = request.json
     license_key = data.get('license_key')
     hwid = data.get('hwid')

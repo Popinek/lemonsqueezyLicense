@@ -118,7 +118,7 @@ def validate_hwid():
 
     data = {
         'license_key': license_key,
-        'hwid': hwid
+        'hwid': "123"
     }
     try:
         response = requests.post('http://127.0.0.1:5000/validate', json=data)
@@ -159,7 +159,9 @@ def main():
             if activate_license_key(license_key) or validate_license_key():  # Activate or validate the license key
                 break  # Exit the loop if the license key is valid
 
+    # Validate if license key and hwid match in database
     validate_hwid()
+
     # If the license key is valid, run the main script
     main_script()
 
