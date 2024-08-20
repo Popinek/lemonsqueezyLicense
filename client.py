@@ -126,13 +126,24 @@ def validate_hwid():
 
         if response.status_code == 200:
             print(result['message'])
-            return True  # Return True if HWID matches and validation is successful
+            return True  # Proceed if HWID matches
+        elif response.status_code == 404:  # Handle case where license key doesn't exist in the DB
+            print("License key not found in the database. Adding it now...")
+            response = requests.post('http://127.0.0.1:5000/validate', json=data)
+            result = response.json()
+            if response.status_code == 200:
+                print(result['message'])
+                return True  # Proceed after adding the license key and HWID
+            else:
+                print(f"Error: {result['message']}")
+                return False
         else:
             print(f"Error: {result['message']}")
-            return False  # Return False if there is an HWID mismatch or other error
+            return False  # Deny access if HWID doesn't match or another error occurs
     except requests.exceptions.RequestException as e:
         print(f"Error: Could not connect to server: {e}")
-        return False  # Return False in case of any request exceptions
+        return False  # Deny access if there's an error connecting to the server
+
 
 
 # The main function that runs your script's main functionality
