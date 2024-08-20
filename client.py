@@ -118,7 +118,7 @@ def validate_hwid():
 
     data = {
         'license_key': license_key,
-        'hwid': "123"
+        'hwid': hwid
     }
     try:
         response = requests.post('http://127.0.0.1:5000/validate', json=data)
@@ -126,12 +126,14 @@ def validate_hwid():
 
         if response.status_code == 200:
             print(result['message'])
-            # Proceed with starting the software
+            return True  # Return True if HWID matches and validation is successful
         else:
             print(f"Error: {result['message']}")
-            # Exit or disable the software
+            return False  # Return False if there is an HWID mismatch or other error
     except requests.exceptions.RequestException as e:
         print(f"Error: Could not connect to server: {e}")
+        return False  # Return False in case of any request exceptions
+
 
 # The main function that runs your script's main functionality
 def main_script():
@@ -145,8 +147,16 @@ def main():
 
     if activation_key:
         print("License key found. Validating...")
-        if not validate_license_key():  # Validate the loaded license key
+
+        if validate_license_key():  # Validate the loaded license key
+            if validate_hwid():  # Run HWID validation and check if it was successful
+                main_script()  # Only run the main script if HWID validation succeeds
+            else:
+                print("Access denied due to HWID mismatch.")  # Notify user of denial
+                return  # Exit the program if HWID does not match
+        else:
             return  # Exit the program if the license key is invalid
+
     else:
         # Prompt the user for a license key until a valid one is provided or the user quits
         while True:
@@ -157,13 +167,13 @@ def main():
                 return
 
             if activate_license_key(license_key) or validate_license_key():  # Activate or validate the license key
-                break  # Exit the loop if the license key is valid
+                if validate_hwid():  # Run HWID validation and check if it was successful
+                    main_script()  # Only run the main script if HWID validation succeeds
+                else:
+                    print("Access denied due to HWID mismatch.")  # Notify user of denial
+                break  # Exit the loop if the license key is valid and HWID matches
 
-    # Validate if license key and hwid match in database
-    validate_hwid()
 
-    # If the license key is valid, run the main script
-    main_script()
 
 
 # Check if this script is being run directly (as opposed to being imported as a module)
