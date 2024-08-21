@@ -2,7 +2,8 @@ import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
 import hashlib
 
-
+# TODO
+#  Environment Variables for Sensitive Data
 
 
 # URLs for interacting with the Lemon Squeezy API
@@ -122,7 +123,11 @@ def validate_hwid():
     }
     try:
         response = requests.post('http://127.0.0.1:5000/validate', json=data)
-        result = response.json()
+        if response.headers.get('Content-Type') == 'application/json':
+            result = response.json()
+        else:
+            print("Error: Received non-JSON response from the server.")
+            return False
 
         if response.status_code == 200:
             print(result['message'])

@@ -27,8 +27,8 @@ def validate_hwis():
     if not license_key or not hwid:
         return jsonify({'status': 'error', 'message': 'License key and HWID are required'}), 400
 
-    conn = sqlite3.connect('licenses.db')
-    cursor = conn.cursor()
+    with sqlite3.connect('licenses.db') as conn:
+        cursor = conn.cursor()
 
     # Check if the license key exists in the database
     cursor.execute('SELECT hwid FROM licenses WHERE license_key = ?', (license_key,))
