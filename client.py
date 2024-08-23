@@ -4,6 +4,11 @@ import hashlib
 
 # TODO
 #  Environment Variables for Sensitive Data
+#    Retries for Network Operations:
+#       ADD GUI for entering license key
+
+
+
 
 
 # URLs for interacting with the Lemon Squeezy API
