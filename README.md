@@ -1,23 +1,24 @@
-# License Key Management System
+# License Key Management System With LemonSqueezy For Python Apps
 
-This repository contains a Python application for managing license keys using the Lemon Squeezy API. It provides functionalities for activating and validating license keys through both a command-line interface and a Flask web server.
+This project manages license keys using the Lemon Squeezy API, allowing for key activation and validation via a command-line tool and a Flask-based web server.
 
 ## Features
 
 - **Command-Line Interface**:
   - Prompt for a license key.
   - Activate a license key using Lemon Squeezy API.
-  - Validate the license key.
+  - Validate the license key & HWID.
   - Save and load the license key from a file.
 
 - **Flask Web Server**:
-  - Provides an endpoint to validate license keys via a POST request.
+  - Provides an API to validate license keys via a POST request.
 
 ## Requirements
 
 - Python 3.x
 - `requests` library
 - `Flask` library
+- `sqlite3` library
 
 ## Installation
 
@@ -32,10 +33,10 @@ This repository contains a Python application for managing license keys using th
    pip install -r requirements.txt
    ```
 
-3. **Set Up Environment Variables**:
-   Create a `.env` file in the root directory and add your Lemon Squeezy API key:
+3. **Set Environment Variables:**
+   Create a `.env` file in the root directory and add your URL:
    ```
-   LEMON_SQUEEZY_API_KEY=your_api_key_here
+   URL=https://example.com/validate
    ```
 
 ## Usage
@@ -49,6 +50,7 @@ This repository contains a Python application for managing license keys using th
 
    - The script will prompt for a license key.
    - It will attempt to activate and validate the key.
+   - HWID validation is performed after successful license activation.
    - If successful, it will save the key and run the main script functionality.
 
 2. **License Key Activation**:
@@ -75,6 +77,7 @@ This repository contains a Python application for managing license keys using th
      }
      ```
    - Response will be in JSON format indicating whether the license key is valid or not.
+   - If HWID mismatch occurs, access is denied.
 
 ## API Endpoint
 
@@ -89,19 +92,27 @@ This repository contains a Python application for managing license keys using th
 
   **Response**:
   ```json
-  {
-    "valid": true,
-    "message": "License key is valid"
-  }
+    {
+      "status": "success",
+      "message": "License key and HWID matches!"
+    }
   ```
-
   or
 
   ```json
-  {
-    "valid": false,
-    "message": "Invalid or inactive license key"
-  }
+    {
+      "status": "success",
+      "message": "License key and HWID added successfully"
+    }
+  ```
+  
+  or
+
+  ```json
+    {
+      "status": "error",
+      "message": "HWID mismatch"
+    }
   ```
 
 ## Contributing

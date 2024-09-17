@@ -1,6 +1,7 @@
 import requests  # Import the requests library to handle HTTP requests
 import os  # Import the os module to interact with the operating system, such as reading environment variables
 import hashlib
+from dotenv import load_dotenv
 
 # TODO
 #  Environment Variables for Sensitive Data
@@ -9,7 +10,7 @@ import hashlib
 
 
 
-
+load_dotenv()
 
 # URLs for interacting with the Lemon Squeezy API
 ACTIVATE_URL = 'https://api.lemonsqueezy.com/v1/licenses/activate'  # URL for activating a license
@@ -127,7 +128,7 @@ def validate_hwid():
         'hwid': hwid
     }
     try:
-        response = requests.post('http://127.0.0.1:5000/validate', json=data)
+        response = requests.post(os.getenv('URL'), json=data)
         if response.headers.get('Content-Type') == 'application/json':
             result = response.json()
         else:
@@ -139,7 +140,7 @@ def validate_hwid():
             return True  # Proceed if HWID matches
         elif response.status_code == 404:  # Handle case where license key doesn't exist in the DB
             print("License key not found in the database. Adding it now...")
-            response = requests.post('http://127.0.0.1:5000/validate', json=data)
+            response = requests.post(os.getenv('URL'), json=data)
             result = response.json()
             if response.status_code == 200:
                 print(result['message'])
