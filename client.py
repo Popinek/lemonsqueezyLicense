@@ -3,10 +3,13 @@ import os  # Import the os module to interact with the operating system, such as
 import hashlib
 from dotenv import load_dotenv
 
-# TODO
-#  Environment Variables for Sensitive Data
-#    Retries for Network Operations:
-#       ADD GUI for entering license key
+
+'''
+ TODO
+      ADD GUI for entering license key
+      - make it so it doesnt show when everything is ok, only when no activation key saved - 1. run, or there is a problem with validation 
+      or hw id mismatch
+'''
 
 
 
