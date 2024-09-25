@@ -132,6 +132,8 @@ def validate_hwid():
     }
     try:
         response = requests.post(os.getenv('URL'), json=data)
+        print(f"Response Status Code: {response.status_code}")
+        print(f"Response Content: {response.text}")  # Add this line to check the content
         if response.headers.get('Content-Type') == 'application/json':
             result = response.json()
         else:
